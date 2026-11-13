@@ -21,9 +21,19 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build and push Docker Image') {
+	  environment{
+		Docker_Image="cicd-image:${BUILD_NUMBER}"
+		REGISTRY_CREDENTIALS = credentials('github')
+          }
             steps {
-                sh 'docker build -t simple-cicd:latest .'
+	      script{
+                sh 'docker build -t ${Docker_Image} .'
+		def dockerImage = docker.image("$Docker_Image")
+		docker.withRegistry('https://hub.docker.com/repository/docker/sathik2074751/cicd-image/', "docker-cred"){
+		dockerImage.push()
+	}
+		}
             }
         }
 
