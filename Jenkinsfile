@@ -66,7 +66,7 @@ pipeline {
          steps {
         sh '''
             kubectl apply -f deployment.yml
-            kubectl rollout status deployment/cicd-app
+            kubectl rollout status deployment/project-cicd
             kubectl get pods
             kubectl get services
         '''
