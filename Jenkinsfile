@@ -44,15 +44,21 @@ pipeline {
         }
         steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "sathikbasha.abdul@gmail.com"
-                    git config user.name "sathik-git"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s/latest/${BUILD_NUMBER}/g" deployment.yml
-                    git add deployment.yml
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-                '''
+             sh '''
+             git config user.email "sathikbasha.abdul@gmail.com"
+             git config user.name "sathik-git"
+
+             sed -i "s/latest/${BUILD_NUMBER}/g" deployment.yml
+
+             git add deployment.yml
+
+             if ! git diff --cached --quiet; then
+             git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+              git push https://${GITHUB_TOKEN}@github.com/sathik-git/k8s-project.git HEAD:main
+            else
+             echo "No changes in deployment.yml. Skipping commit and push."
+             fi
+             '''
             }
         }
     }
