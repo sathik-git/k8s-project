@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cicd
-        image: simple-cicd:latest
+        image: sathik2074751/cicd-image:latest
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort : 3000

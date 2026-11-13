@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build and push Docker Image') {
 	  environment{
-		Docker_Image="cicd-image:${BUILD_NUMBER}"
+		Docker_Image="sathik2074751/cicd-image:${BUILD_NUMBER}"
 		REGISTRY_CREDENTIALS = credentials('github')
           }
             steps {
